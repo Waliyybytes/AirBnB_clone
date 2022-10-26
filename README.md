@@ -24,7 +24,9 @@ The ALX B&B clone wll sums up the implementation of my four months of studies at
 - What is an UUID
 - What is *args and how to use it
 - What is **kwargs and how to use it
-- How to handle named arguments in a function## Description of the Command Interprator
+- How to handle named arguments in a function
+
+## Description of the Command Interprator
 
 | Command           | Description                                                                |
 | ----------------- | ------------------------------------------------------------------ |
