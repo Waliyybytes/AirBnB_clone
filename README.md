@@ -1,4 +1,4 @@
-# AirBnB_clone
+﻿# AirBnB_clone
 This is my first group portofolio project for alx-software engineering program
 
 Description of the project
@@ -24,4 +24,34 @@ As you navigate this code base, it is great to note the following concepts, whil
     . What is *args and how to use it
     . What is **kwargs and how to use it
     . How to handle named arguments in a function
+
+Description of the command interpreter
+
+Commands
+Description
+quit
+Quits the console
+Ctl + D
+Quits the console
+help or help <command>
+Displays all commands or Displays instructions for a specific command
+create <class>
+Creates an object of type , saves it to a JSON file, and prints the objects ID
+show <class> <ID>
+Shows string representation of an object
+destroy <class> <ID>
+Deletes an objects
+all or all <class>
+Prints all string representations of all objects or Prints all string representations of all objects of a specific class
+update <class> <id> <attribute name> "<attribute value>"
+Updates an object with a certain attribute (new or existing)
+<class>.all()
+Same as all <class>
+<class>.count()
+Retrieves the number of objects of a certain class
+
+
+General Execution
+
+
 
