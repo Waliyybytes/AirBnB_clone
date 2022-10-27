@@ -15,7 +15,6 @@ class Console(cmd.Cmd):
 
     def do_quit(self, line):
         """ Closes the console """
-        print()
         return True
 
     def emptyline(self):
@@ -24,6 +23,7 @@ class Console(cmd.Cmd):
 
     def do_EOF(self, line):
         """ Quits the console """
+        print()
         return True
 
 
