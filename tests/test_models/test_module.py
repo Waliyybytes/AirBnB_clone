@@ -14,10 +14,8 @@ class TestBaseModel(unittest.TestCase):
     Test case attributes for base model
     """
 
-    def setup(self):
-        pass
-
     def test_basic(self):
+        """Test basic attributes for base model"""
         my_model = BaseModel()
         my_model.name = "My First Model"
         my_model.my_number = 89

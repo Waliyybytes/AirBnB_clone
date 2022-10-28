@@ -45,9 +45,10 @@ class BaseModel:
                 if key == "__class__":
                     continue 
                 else:
+                     # check and change the format for updated_at & created_at
                     if key == "updated_at" or key == "created_at":
-                      kwargs[key] = datetime.datetime.strptime(kwargs[key], "%Y-%m-%dT%H:%M:%S.%f")    
-
+                        kwargs[key] = datetime.datetime.strptime(kwargs[key], "%Y-%m-%dT%H:%M:%S.%f")
+                    # set the attributes of the instance
                     setattr(self, key, kwargs[key])
 
     def __str__(self):
