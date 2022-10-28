@@ -3,8 +3,11 @@
 Performed test on console using a  python module
 """
 
+import os
+import sys
 import unittest
-import console
+from console import Console
+from unittest.mock import patch
 
 
 class TestConsole(unittest.TestCase):
@@ -15,10 +18,11 @@ class TestConsole(unittest.TestCase):
     def setup(self):
         pass
 
-    def test_quit(self):
+    @patch('console.do_quit')
+    def test_quit(self,mock_do_quit):
         """Test the quit command"""
-        x = console.quit()
-        self.assertTrue(x)
+        mock_do_quit.return_value = True
+        assertEqual(do_quit(),True)
         
 
 
