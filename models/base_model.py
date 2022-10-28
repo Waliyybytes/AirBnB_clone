@@ -7,7 +7,7 @@ import uuid
 import datetime
 import time
 
-class BaseModels:
+class BaseModel:
     """Blue print to my base model"""
 
 
