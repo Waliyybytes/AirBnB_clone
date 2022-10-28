@@ -4,21 +4,51 @@
 """
 
 import uuid
-import datetime
-import time
+from datetime import datetime
+import models
 
 class BaseModel:
-    """Blue print to my base model"""
+    """
+    Blue print to my base model
+
+    Atrribute: 
+            id(str) => unique id for each individual instance
+            created_at(str) => unique date for when instance was created using iso format
+            updated_at(str) => unique date for when instance attribute was updated using iso format
+
+    Method:
+        __str__: prints the class name, id, and creates dictionary
+        representations of the input values
+        save(self): updates instance arttributes with current datetime
+        to_dict(self): returns the dictionary values of the instance obj        
+    """
 
 
-    def __init__(self, id, created_at, updated_at):
+    def __init__(self, *args, **kwargs):
 
-        today = datetime.datetime.now()
-        string_date = today.isoformat()
+        """
+        Public instance artributes initialization
+        after creation
+        Args:
+            *args(args): arguments
+            **kwargs(dict): attrubute values
+        """
 
-        self.id = str(uuid.uuid4())
-        self.created_at = string_date
-        self.updated_at = string_date
+        DATE_TIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
+
+        if not kwargs:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
+        else:
+            for key,value in kwargs.keys():
+                if key == "__class__":
+                    continue 
+                else:
+                    if key == "updated_at" or key == "created_at":
+                      kwargs[key] = datetime.datetime.strptime(kwargs[key], "%Y-%m-%dT%H:%M:%S.%f")    
+
+                    setattr(self, key, kwargs[key])
 
     def __str__(self):
         """Prints string representation of the class"""
@@ -26,15 +56,15 @@ class BaseModel:
 
     def save(self):
         """Updates the updated time to current date time"""
-        self.updated_at = string_date
+        self.updated_at = datetime.utcnow()
 
     def to_dict(self):
-        """Saves class instances and date to dictionary"""
-        map_object = {}
-        for key,value in self.__dict__.item():
-            if key == "created_at" or key == "updated_at":
-                map_object[key] == value.isoformat()
+        '''returns a dictionary containing all keys/values of __dict__'''
+        object_dict = {}
+        for key in self.__dict__.keys():
+            if key not in ('created_at', 'updated_at'):
+                object_dict[key] = self.__dict__[key]
             else:
-                map_object[key] == value
-            map_object[__class__] == self.__class__.__name__
-        return map_object                
+                object_dict[key] = datetime.isoformat(self.__dict__[key])
+        object_dict['__class__'] = self.__class__.__name__
+        return (object_dict)
