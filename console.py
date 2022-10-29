@@ -5,7 +5,7 @@
 import cmd
 
 
-class Console(cmd.Cmd):
+class HBNBCommand(cmd.Cmd):
     """
         Console v1.0
         This script inherits the cmd class with all its attributes and methods
@@ -28,4 +28,4 @@ class Console(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    Console().cmdloop()
+    HBNBCommand().cmdloop()
