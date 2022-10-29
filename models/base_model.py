@@ -7,22 +7,22 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
     """
     Blue print to my base model
 
-    Atrribute: 
+    Atrribute:
             id(str) => unique id for each individual instance
-            created_at(str) => unique date for when instance was created using iso format
-            updated_at(str) => unique date for when instance attribute was updated using iso format
+            created_at(str) => instance creation date using iso format
+            updated_at(str) => instance updated using iso format
 
     Method:
         __str__: prints the class name, id, and creates dictionary
         representations of the input values
         save(self): updates instance arttributes with current datetime
-        to_dict(self): returns the dictionary values of the instance obj        
+        to_dict(self): returns the dictionary values of the instance obj
     """
-
 
     def __init__(self, *args, **kwargs):
 
@@ -41,19 +41,21 @@ class BaseModel:
             self.created_at = datetime.utcnow()
             self.updated_at = self.created_at
         else:
-            for key,value in kwargs.keys():
+            for key in kwargs.keys():
                 if key == "__class__":
-                    continue 
+                    continue
                 else:
-                     # check and change the format for updated_at & created_at
+                    # check and change the format for updated_at & created_at
                     if key == "updated_at" or key == "created_at":
-                        kwargs[key] = datetime.datetime.strptime(kwargs[key], DATE_TIME_FORMAT)
+                        kwargs[key] = datetime. \
+                                    strptime(kwargs[key], DATE_TIME_FORMAT)
                     # set the attributes of the instance
                     setattr(self, key, kwargs[key])
 
     def __str__(self):
         """Prints string representation of the class"""
-        return "[{}] ({}) {}".format(self.__class__.__name__,self.id,self.__dict__)
+        return "[{}] ({}) {}" \
+            .format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """Updates the updated time to current date time"""
