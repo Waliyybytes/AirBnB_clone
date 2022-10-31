@@ -4,9 +4,9 @@
 """
 
 import uuid
+from models import *
 from datetime import datetime
-import models
-from models.BaseModel import BaseModel
+from models.base_model import BaseModel
 
 class User(BaseModel):
     """
@@ -26,7 +26,7 @@ class User(BaseModel):
     first_name = ""
     last_name = ""
 
-    def __init__(self, *args, *kwargs):
+    def __init__(self, *args, **kwargs):
         """Initializes attributes for the user class"""
         super().__init__(*args, **kwargs)
         
