@@ -4,14 +4,20 @@ Help stores dictionary to a JSON format for serialization and deserialization
 """
 import json
 from models.base_model import BaseModel
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
-name_convert = {"BaseModel" : BaseModel}
+name_convert = {"BaseModel": BaseModel, "Place": Place, "State": State,
+                "City": City, "Amenity": Amenity, "Review": Review}
 
 
 class FileStorage:
     """
-	File Storage class that serializes and deserializes the instance
-	"""
+        File Storage class that serializes and deserializes the instance
+    """
     __file_path = "file.json"
     __objects = {}
 
@@ -39,6 +45,7 @@ class FileStorage:
             with open(self.__file_path, 'r') as f:
                 j_obj = json.load(f)
             for key in j_obj:
-                self.__objects[key] = name_convert[j_obj[key]["__class__"]](j_obj[key])
-        except:
+                self.__objects[key] = name_convert[j_obj[key]
+                                                   ["__class__"]](j_obj[key])
+        except Exception:
             pass
