@@ -11,10 +11,6 @@ from models import *
 from models import storage
 
 
-name_convert = {"BaseModel": BaseModel, "Place": Place, "State": State,
-                "City": City, "Amenity": Amenity, "Review": Review}
-
-
 class HBNBCommand(cmd.Cmd):
     """
         Console v1.0
@@ -57,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
             Prints the string representation of an instance
             based on the class name and id
         """
-        if line = "" or line is None:
+        if line == "" or line is None:
             print("class name is missing")
         else:
             #get all arguements passed via command line
@@ -79,6 +75,10 @@ class HBNBCommand(cmd.Cmd):
                     print("class doesnt exit")
 
     def do_all(self, line):
+        """
+            Prints all string representation of all instances based or not on the class name
+            The printed result would be a list of strings
+        """
         instance_obj = storage.all()
         instace_list = []
 
@@ -86,19 +86,22 @@ class HBNBCommand(cmd.Cmd):
             for key, value in storage.all().items():
                 instance_list.append(str(value))
             print(instance_list)
+        else:
+            if line not in storage.classes():
+                print("class does not exit")
+                return
             else:
-                if line not in storage.classes():
-                    print("class does not exit")
-                    return
-                else:
-                    for key, value in storage.all().items():
-                        class_name, instance_id = key_split(".")
-                        if line == class_name:
-                            instance_list.append(str(value))
-                    print(instance_list)                
+                for key, value in storage.all().items():
+                    class_name, instance_id = key_split(".")
+                    if line == class_name:
+                        instance_list.append(str(value))
+                print(instance_list)                
 
     def do_destroy(self, line):
-        if line is ="" or line is None:
+        """
+            Delete an instance based on the class name and id
+        """
+        if line == "" or line is None:
             print("class name is missing")
         else:
             #get all the arguements passed through the command line
@@ -123,8 +126,12 @@ class HBNBCommand(cmd.Cmd):
                     print("class does not exist")                    
 
     def do_update(self, line):
-         checks = re.search(r"^(\w+)\s([\S]+?)\s({.+?})$", line)
-         if checks:
+        """
+            Update an instance based on the class name and id by adding or updating attribute
+            It will save the change into json file
+        """
+        checks = re.search(r"^(\w+)\s([\S]+?)\s({.+?})$", line)
+        if checks:
             #whether it is a dictionary
             class_name = checks.group(1)
             instance_id = checks.group(2)
@@ -141,7 +148,7 @@ class HBNBCommand(cmd.Cmd):
                     print("class doesnot exist")
                 else:
                     key = f"{class_name}.{instance_id}"
-                    if key not in storage.all()
+                    if key not in storage.all():
                         print("no issue found")
                     else:
                         instance_dict = storage.all()[key]
@@ -155,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
                                 setattr(instance_dict,key,value)
                                 storage.save()
 
-         else:
+        else:
             checks = re.search( r"^(\w+)\s([\S]+?)\s\"(.+?)\"\,\s\"(.+?)\"", line)
             class_name = checks.group(1)
             instance_id = checks.group(2)
@@ -191,7 +198,8 @@ class HBNBCommand(cmd.Cmd):
         if not sys.stdin.isatty():
             print()   
 
-         checks = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
+        checks = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line) 
+
         if checks:
             class_name = checks.group(1)
             command = checks.group(2)
