@@ -158,37 +158,38 @@ class HBNBCommand(cmd.Cmd):
                         storage.save() 
 
     def precmd(self,line):
-        #make app not work interactively
-        if not sys.stdin.isatty():
-            print()   
+        """Intercepts commands to test for class.syntax()"""
+        # print("PRECMD:::", line)
+        match = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
+        if not match:
+            return line
+        classname = match.group(1)
+        method = match.group(2)
+        args = match.group(3)
+        match_uid_and_args = re.search('^"([^"]*)"(?:, (.*))?$', args)
+        if match_uid_and_args:
+            uid = match_uid_and_args.group(1)
+            attr_or_dict = match_uid_and_args.group(2)
+        else:
+            uid = args
+            attr_or_dict = False
 
-        checks = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line) 
+        attr_and_value = ""
+        if method == "update" and attr_or_dict:
+            match_dict = re.search('^({.*})$', attr_or_dict)
+            if match_dict:
+                self.update_dict(classname, uid, match_dict.group(1))
+                return ""
+            match_attr_and_value = re.search(
+                '^(?:"([^"]*)")?(?:, (.*))?$', attr_or_dict)
+            if match_attr_and_value:
+                attr_and_value = (match_attr_and_value.group(
+                    1) or "") + " " + (match_attr_and_value.group(2) or "")
+        command = method + " " + classname + " " + uid + " " + attr_and_value
+        self.onecmd(command)
+        return command
 
-        if checks:
-            class_name = checks.group(1)
-            command = checks.group(2)
-            args = checks.group(3)
 
-            if args is None:
-                line = f"{command} {class_name}"
-                return ''
-            else:
-                # print(args)
-                args_checks = re.search(r"^\"([^\"]*)\"(?:, (.*))?$", args)
-                # print(args_checks.group(1), args_checks.group(2))
-                instance_id = args_checks[1]
-
-                if args_checks.group(2) is None:
-                    line = f"{command} {class_name} {instance_id}"
-                else:
-                    attribute_part = args_checks.group(2)
-                    # print(attribute_part)
-                    line = f"{command} {class_name} {instance_id} \
-{attribute_part}"
-                return ''
-
-        return cmd.Cmd.precmd(self, line)
-        # return ''
 
     def do_count(self, line):
         '''Counts all the instances of the class'''
