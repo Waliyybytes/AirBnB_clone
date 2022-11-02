@@ -62,23 +62,17 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Prints all string representation of all instances"""
-        instance_obj = storage.all()
-        instance_list = []
-
-        if line == "" or line is None:
-            for key, value in storage.all().items():
-                instance_list.append(str(value))
-            print(instance_list)
-        else:
-            if line not in storage.classes():
-                print("class does not exit")
-                return
+        if line != "":
+            words = line.split(' ')
+            if words[0] not in storage.classes():
+                print("** class doesn't exist **")
             else:
-                for key, value in storage.all().items():
-                    class_name, instance_id = key.split(".")
-                    if line == class_name:
-                        instance_list.append(str(value))
-                print(instance_list)                
+                nl = [str(obj) for key, obj in storage.all().items()
+                      if type(obj).__name__ == words[0]]
+                print(nl)
+        else:
+            new_list = [str(obj) for key, obj in storage.all().items()]
+            print(new_list)               
 
     def do_destroy(self, line):
         """Delete an instance based on the class name and id"""
